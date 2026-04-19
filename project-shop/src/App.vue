@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="js">
-import Default from './templates/default.vue';
+import Default from './templates/Default.vue';
 </script>
 
 <style lang="css">
