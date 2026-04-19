@@ -1,7 +1,12 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<template>
+  <Default />
+</template>
+
+<script setup lang="js">
+import Default from './templates/default.vue';
 </script>
 
-<template>
-  <HelloWorld />
-</template>
+<style lang="css">
+
+</style>
+
