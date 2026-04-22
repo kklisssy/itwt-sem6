@@ -1,21 +1,31 @@
 <template>
+  <div class="page">
     <Header />
-    <Main />
-    <Feature />
+    
+    <main class="page-main">
+      <Main />
+    </main>
+
     <Subscribe />
     <Footer />
-
+  </div>
 </template>
 
 <script setup lang="js">
-import Feature from '../components/Feature.vue';
-import Footer from '../components/Footer.vue';
-import Header from '../components/Header.vue';
-import Subscribe from '../components/Subscribe.vue';
-import Main from '../pages/Main.vue';
-
+import Header from "../components/Header.vue";
+import Main from "../pages/MainPage.vue";
+import Subscribe from "../components/Subscribe.vue";
+import Footer from "../components/Footer.vue";
 </script>
 
 <style scoped lang="css">
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
+.page-main {
+  flex: 1;
+}
 </style>
