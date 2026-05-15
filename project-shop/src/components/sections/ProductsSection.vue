@@ -9,25 +9,11 @@
       </div>
 
       <div class="products-grid">
-        <article
-          v-for="product in products"
+        <ProductCard
+          v-for="product in featuredProducts"
           :key="product.id"
-          class="product-card"
-        >
-          <img
-            class="product-card-image"
-            :src="product.image"
-            :alt="product.title"
-          />
-
-          <div class="product-card-content">
-            <h3>{{ product.title }}</h3>
-            <p class="product-card-text">
-              {{ product.description }}
-            </p>
-            <p class="product-card-price">{{ product.price }}</p>
-          </div>
-        </article>
+          :product="product"
+        />
       </div>
 
       <div class="products-actions">
@@ -40,56 +26,10 @@
 </template>
 
 <script setup lang="js">
-const products = [
-  {
-    id: 1,
-    title: "ELLERY X M'O CAPSULE",
-    description:
-      "Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.",
-    price: "$52.00",
-    image: new URL("../../assets/products/1.png", import.meta.url).href,
-  },
-  {
-    id: 2,
-    title: "ELLERY X M'O CAPSULE",
-    description:
-      "Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.",
-    price: "$52.00",
-    image: new URL("../../assets/products/2.png", import.meta.url).href,
-  },
-  {
-    id: 3,
-    title: "ELLERY X M'O CAPSULE",
-    description:
-      "Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.",
-    price: "$52.00",
-    image: new URL("../../assets/products/3.png", import.meta.url).href,
-  },
-  {
-    id: 4,
-    title: "ELLERY X M'O CAPSULE",
-    description:
-      "Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.",
-    price: "$52.00",
-    image: new URL("../../assets/products/4.png", import.meta.url).href,
-  },
-  {
-    id: 5,
-    title: "ELLERY X M'O CAPSULE",
-    description:
-      "Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.",
-    price: "$52.00",
-    image: new URL("../../assets/products/5.png", import.meta.url).href,
-  },
-  {
-    id: 6,
-    title: "ELLERY X M'O CAPSULE",
-    description:
-      "Known for her sculptural takes on traditional tailoring, Australian arbiter of cool Kym Ellery teams up with Moda Operandi.",
-    price: "$52.00",
-    image: new URL("../../assets/products/6.png", import.meta.url).href,
-  },
-];
+import ProductCard from "../product/ProductCard.vue";
+import { products } from "../../data/products";
+
+const featuredProducts = products.slice(0, 6);
 </script>
 
 <style scoped lang="css">
@@ -120,43 +60,6 @@ const products = [
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-}
-
-.product-card {
-  background-color: #f8f8f8;
-}
-
-.product-card-image {
-  display: block;
-  width: 100%;
-  height: 420px;
-  object-fit: contain;
-}
-
-.product-card-content {
-  padding: 24px 16px 20px;
-}
-
-.product-card-content h3 {
-  margin: 0 0 12px;
-  font-size: 13px;
-  line-height: 1.2;
-  font-weight: 400;
-  color: #000000;
-}
-
-.product-card-text {
-  margin: 0 0 18px;
-  font-size: 14px;
-  line-height: 1.2;
-  color: #5d5d5d;
-}
-
-.product-card-price {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.2;
-  color: var(--color-accent);
 }
 
 .products-actions {
@@ -198,10 +101,6 @@ const products = [
     gap: 16px;
   }
 
-  .product-card-image {
-    height: 420px;
-  }
-
   .products-actions {
     margin-top: 32px;
   }
@@ -219,14 +118,6 @@ const products = [
   .products-grid {
     grid-template-columns: max(359px);
     gap: 16px;
-  }
-
-  .product-card-image {
-    height: 418px;
-  }
-
-  .product-card-content {
-    padding: 24px 18px 20px;
   }
 
   .products-actions {
