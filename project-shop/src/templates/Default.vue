@@ -3,7 +3,7 @@
     <Header />
 
     <main class="page-main">
-      <ProductPage />
+      <RegistrationPage />
     </main>
 
     <Subscribe />
@@ -13,7 +13,7 @@
 
 <script setup lang="js">
 import Header from "../components/Header.vue";
-import ProductPage from "../pages/ProductPage.vue";
+import RegistrationPage from "../pages/RegistrationPage.vue";
 import Subscribe from "../components/Subscribe.vue";
 import Footer from "../components/Footer.vue";
 </script>
