@@ -26,6 +26,7 @@
       </button>
 
       <img
+        v-if="currentProduct"
         class="product-hero-image"
         :src="currentProduct.image"
         :alt="currentProduct.title"
@@ -43,17 +44,16 @@
     <section class="product-details">
       <div class="container">
         <article class="product-info">
-          <p class="product-collection">WOMEN COLLECTION</p>
-          <h2>MOSCHINO CHEAP AND CHIC</h2>
+          <p class="product-collection">
+            {{ currentProduct?.collection }}
+          </p>
+          <h2>{{ currentProduct?.title }}</h2>
 
           <p class="product-description">
-            Compellingly actualize fully researched processes before proactive
-            outsourcing. Progressively syndicate collaborative architectures
-            before cutting-edge services. Completely visualize parallel core
-            competencies rather than exceptional portals.
+            {{ currentProduct?.description }}
           </p>
 
-          <p class="product-price">$561</p>
+          <p class="product-price">{{ currentProduct?.price }}</p>
 
           <div class="product-options">
             <button type="button">CHOOSE COLOR</button>
@@ -95,11 +95,18 @@
 </template>
 
 <script setup lang="js">
+import { ref, onMounted } from "vue";
 import ProductCard from "../components/product/ProductCard.vue";
-import { products } from "../data/products";
+import { getProduct } from "../api/productApi";
 
-const currentProduct = products[9];
-const relatedProducts = [products[3], products[2], products[5]];
+const currentProduct = ref(null);
+const relatedProducts = ref([]);
+
+onMounted(async () => {
+  const data = await getProduct();
+  currentProduct.value = data.product;
+  relatedProducts.value = data.relatedProducts;
+});
 </script>
 
 <style scoped lang="css">
