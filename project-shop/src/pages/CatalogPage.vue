@@ -35,7 +35,7 @@
 
         <div class="catalog-grid">
           <ProductCard
-            v-for="product in productsCatalog"
+            v-for="product in catalogStore.products"
             :key="product.id"
             :product="product"
           />
@@ -59,19 +59,15 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import ProductCard from "../components/product/ProductCard.vue";
 import FeatureSection from "../components/sections/FeatureSection.vue";
-import { getCatalog } from "../api/catalogApi";
+import { useCatalogStore } from "../stores/useCatalogStore";
 
-const productsCatalog = ref([]);
+const catalogStore = useCatalogStore();
 
-onMounted(async () => {
-  const data = await getCatalog();
-
-  productsCatalog.value = data.productsCatalog
-    .filter((product) => product.category === "men")
-    .slice(0, 9);
+onMounted(() => {
+  catalogStore.getCatalog();
 });
 </script>
 
