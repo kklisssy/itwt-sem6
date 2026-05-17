@@ -91,12 +91,12 @@
             <div class="cart-total">
               <div class="subtotal">
                 <span>SUB TOTAL</span>
-                <span>$900</span>
+                <span>{{ cartSummary.subTotal }}</span>
               </div>
 
               <div class="grand-total">
                 <span>GRAND TOTAL</span>
-                <span>$900</span>
+                <span>{{ cartSummary.grandTotal }}</span>
               </div>
 
               <button type="button">PROCEED TO CHECKOUT</button>
@@ -109,28 +109,20 @@
 </template>
 
 <script setup lang="js">
-import { products } from "../data/products";
+import { ref, onMounted } from "vue";
+import { getCart } from "../api/cartApi";
 
-const cartItems = [
-  {
-    id: 1,
-    title: "MANGO PEOPLE T-SHIRT",
-    price: "$300",
-    color: "Red",
-    size: "XI",
-    quantity: 2,
-    image: products[2].image,
-  },
-  {
-    id: 2,
-    title: "MANGO PEOPLE T-SHIRT",
-    price: "$300",
-    color: "Red",
-    size: "XI",
-    quantity: 2,
-    image: products[3].image,
-  },
-];
+const cartItems = ref([]);
+const cartSummary = ref({
+  subTotal: "$0",
+  grandTotal: "$0",
+});
+
+onMounted(async () => {
+  const data = await getCart();
+  cartItems.value = data.items;
+  cartSummary.value = data.summary;
+});
 </script>
 
 <style scoped lang="css">

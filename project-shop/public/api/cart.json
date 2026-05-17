@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "title": "MANGO PEOPLE T-SHIRT",
+      "price": "$300",
+      "color": "Red",
+      "size": "XI",
+      "quantity": 2,
+      "image": "/images/products/3.png"
+    },
+    {
+      "id": 2,
+      "title": "MANGO PEOPLE T-SHIRT",
+      "price": "$300",
+      "color": "Red",
+      "size": "XI",
+      "quantity": 2,
+      "image": "/images/products/2.png"
+    }
+  ],
+  "summary": {
+    "subTotal": "$900",
+    "grandTotal": "$900"
+  }
+}
