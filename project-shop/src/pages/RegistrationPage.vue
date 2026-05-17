@@ -60,18 +60,15 @@
           </form>
 
           <section class="loyalty">
-            <h2>LOYALTY HAS ITS PERKS</h2>
+            <h2>{{ loyalty.title }}</h2>
             <p>
-              Get in on the loyalty program where you can earn points and unlock
-              serious perks. Starting with these as soon as you join:
+              {{ loyalty.text }}
             </p>
 
             <ul>
-              <li>15% off welcome offer</li>
-              <li>Free shipping, returns and exchanges on all orders</li>
-              <li>$10 off a purchase on your birthday</li>
-              <li>Early access to products</li>
-              <li>Exclusive offers & rewards</li>
+              <li v-for="string in loyalty.list" :key="string">
+                {{ string }}
+              </li>
             </ul>
           </section>
         </div>
@@ -80,7 +77,21 @@
   </div>
 </template>
 
-<script setup lang="js"></script>
+<script setup lang="js">
+import { ref, onMounted } from "vue";
+import { getRegistration } from "../api/registrationApi";
+
+const loyalty = ref({
+  title: "",
+  text: "",
+  list: [],
+});
+
+onMounted(async () => {
+  const data = await getRegistration();
+  loyalty.value = data.loyalty;
+});
+</script>
 
 <style scoped lang="css">
 .registration-heading {
@@ -254,7 +265,7 @@
   }
 
   .loyalty li {
-    padding-left: 42px;
+    padding-left: 20px;
   }
 }
 
