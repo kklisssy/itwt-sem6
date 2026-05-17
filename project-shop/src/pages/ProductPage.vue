@@ -26,10 +26,10 @@
       </button>
 
       <img
-        v-if="currentProduct"
+        v-if="productStore.product"
         class="product-hero-image"
-        :src="currentProduct.image"
-        :alt="currentProduct.title"
+        :src="productStore.product.image"
+        :alt="productStore.product.title"
       />
 
       <button
@@ -45,15 +45,15 @@
       <div class="container">
         <article class="product-info">
           <p class="product-collection">
-            {{ currentProduct?.collection }}
+            {{ productStore.product?.collection }}
           </p>
-          <h2>{{ currentProduct?.title }}</h2>
+          <h2>{{ productStore.product?.title }}</h2>
 
           <p class="product-description">
-            {{ currentProduct?.description }}
+            {{ productStore.product?.description }}
           </p>
 
-          <p class="product-price">{{ currentProduct?.price }}</p>
+          <p class="product-price">{{ productStore.product?.price }}</p>
 
           <div class="product-options">
             <button type="button">CHOOSE COLOR</button>
@@ -84,7 +84,7 @@
       <div class="container">
         <div class="related-grid">
           <ProductCard
-            v-for="product in relatedProducts"
+            v-for="product in productStore.relatedProducts"
             :key="product.id"
             :product="product"
           />
@@ -95,17 +95,14 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import ProductCard from "../components/product/ProductCard.vue";
-import { getProduct } from "../api/productApi";
+import { useProductStore } from "../stores/useProductStore";
 
-const currentProduct = ref(null);
-const relatedProducts = ref([]);
+const productStore = useProductStore();
 
-onMounted(async () => {
-  const data = await getProduct();
-  currentProduct.value = data.product;
-  relatedProducts.value = data.relatedProducts;
+onMounted(() => {
+  productStore.getProduct();
 });
 </script>
 
