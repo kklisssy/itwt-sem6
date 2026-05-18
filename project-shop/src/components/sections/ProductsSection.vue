@@ -10,7 +10,7 @@
 
       <div class="products-grid">
         <ProductCard
-          v-for="product in productsHome"
+          v-for="product in homeStore.products"
           :key="product.id"
           :product="product"
         />
@@ -26,15 +26,14 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import ProductCard from "../product/ProductCard.vue";
-import { getHome } from "../../api/homeApi";
+import { useHomeStore } from "../../stores/useHomeStore";
 
-const productsHome = ref([]);
+const homeStore = useHomeStore();
 
-onMounted(async () => {
-  const data = await getHome();
-  productsHome.value = data.productsHome;
+onMounted(() => {
+  homeStore.getHome();
 });
 </script>
 
