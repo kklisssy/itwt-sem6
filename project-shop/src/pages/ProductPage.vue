@@ -22,7 +22,18 @@
         type="button"
         aria-label="Previous product image"
       >
-        &lt;
+        <svg
+          width="13"
+          height="22"
+          viewBox="0 0 13 22"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12.4 3.1L4.65 10.85L12.4 18.6L10.85 21.7L0 10.85L10.85 0L12.4 3.1Z"
+            fill="black"
+          />
+        </svg>
       </button>
 
       <img
@@ -37,7 +48,18 @@
         type="button"
         aria-label="Next product image"
       >
-        &gt;
+        <svg
+          width="13"
+          height="22"
+          viewBox="0 0 13 22"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0 18.6L7.75 10.85L0 3.1L1.55 0L12.4 10.85L1.55 21.7L0 18.6Z"
+            fill="black"
+          />
+        </svg>
       </button>
     </section>
 
@@ -168,8 +190,6 @@ onMounted(() => {
   justify-content: center;
   background-color: rgba(42, 42, 42, 0.15);
   color: #000000;
-  font-size: 28px;
-  line-height: 1;
 }
 
 .product-arrow:hover {
