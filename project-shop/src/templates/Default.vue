@@ -3,7 +3,7 @@
     <Header />
 
     <main class="page-main">
-      <Product />
+      <Cart />
     </main>
 
     <Subscribe />
@@ -13,7 +13,7 @@
 
 <script setup lang="js">
 import Header from "../components/Header.vue";
-import Product from "../pages/ProductPage.vue";
+import Cart from "../pages/CartPage.vue";
 import Subscribe from "../components/Subscribe.vue";
 import Footer from "../components/Footer.vue";
 </script>
