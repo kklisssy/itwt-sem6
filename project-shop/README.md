@@ -1,5 +1,33 @@
-# Vue 3 + Vite
+# Project Shop Frontend
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Vue 3 + Vite storefront frontend. The app includes home, catalog, product,
+cart, and registration pages with local JSON data from `public/api`.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+## Production build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Docker
+
+```bash
+docker build -t project-shop-frontend .
+docker run --rm -p 8080:80 project-shop-frontend
+```
+
+Open `http://localhost:8080`.
+
+Or with Compose:
+
+```bash
+docker compose up --build
+```

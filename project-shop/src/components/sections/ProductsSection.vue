@@ -17,7 +17,7 @@
       </div>
 
       <div class="products-actions">
-        <button class="products-button" type="button">
+        <button class="products-button" type="button" @click="navigate('/catalog')">
           Browse All Product
         </button>
       </div>
@@ -29,6 +29,7 @@
 import { ref, onMounted } from "vue";
 import ProductCard from "../product/ProductCard.vue";
 import { getHome } from "../../api/homeApi";
+import { navigate } from "../../router";
 
 const productsHome = ref([]);
 

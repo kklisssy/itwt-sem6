@@ -7,26 +7,29 @@
             <img
               class="subscribe-avatar"
               src="../assets/person.png"
-              alt="Фото клиента"
+              alt="Customer photo"
             />
             <p>
-              “Vestibulum quis porttitor dui! Quisque viverra nunc mi, a
-              <span class="italic">pulvinar purus condimentum“</span>
+              "Vestibulum quis porttitor dui! Quisque viverra nunc mi, a
+              <span class="italic">pulvinar purus condimentum"</span>
             </p>
           </div>
 
           <div class="subscribe-form-block">
             <h2 class="subscribe-title">SUBSCRIBE</h2>
-            <p class="subscribe-text">FOR OUR NEWLETTER AND PROMOTION</p>
+            <p class="subscribe-text">FOR OUR NEWSLETTER AND PROMOTION</p>
 
             <form class="subscribe-form">
-              <input
+              <UiInput
                 class="subscribe-input"
                 type="email"
                 placeholder="Enter Your Email"
                 aria-label="Enter Your Email"
+                pill
               />
-              <button class="subscribe-button" type="submit">Subscribe</button>
+              <UiButton class="subscribe-button" type="submit"
+                >Subscribe</UiButton
+              >
             </form>
           </div>
         </div>
@@ -35,7 +38,10 @@
   </section>
 </template>
 
-<script setup lang="js"></script>
+<script setup lang="js">
+import UiButton from "./ui/Button.vue";
+import UiInput from "./ui/Input.vue";
+</script>
 
 <style scoped lang="css">
 .subscribe {
@@ -106,18 +112,8 @@
 }
 
 .subscribe-input {
-  width: 100%;
-  min-height: 49px;
-  padding: 7px 22px;
-  border: none;
   border-radius: 24px 0 0 24px;
-  background-color: #e1e1e1;
   font-size: 14px;
-  line-height: 1.2;
-}
-
-.subscribe-input::placeholder {
-  color: rgba(34, 34, 36, 0.67);
 }
 
 .subscribe-button {
@@ -125,10 +121,7 @@
   min-height: 49px;
   padding: 7px 16px;
   border-radius: 0 24px 24px 0;
-  background-color: var(--color-accent);
-  color: #ffffff;
   font-size: 14px;
-  line-height: 1.2;
 }
 
 @media (max-width: 1599px) {

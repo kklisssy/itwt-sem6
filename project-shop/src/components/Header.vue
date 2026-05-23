@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header-inner">
         <div class="header-group header-group-left">
-          <a class="header-logo" href="/" aria-label="Brand">
+          <a class="header-logo" href="/" aria-label="Brand" @click.prevent="navigate('/')">
             <svg
               width="44"
               height="38"
@@ -52,8 +52,20 @@
           </button>
         </div>
 
+        <nav class="header-nav" aria-label="Main navigation">
+          <a
+            v-for="link in navLinks"
+            :key="link.path"
+            :class="{ 'is-active': currentPath === link.path }"
+            :href="link.path"
+            @click.prevent="navigate(link.path)"
+          >
+            {{ link.title }}
+          </a>
+        </nav>
+
         <div class="header-group header-group-right">
-          <button class="header-button" type="button" aria-label="Menu">
+          <button class="header-button" type="button" aria-label="Menu" @click="toggleMenu">
             <svg
               width="32"
               height="23"
@@ -72,6 +84,7 @@
             class="header-button is-mobile-hidden"
             type="button"
             aria-label="Account"
+            @click="navigate('/registration')"
           >
             <svg
               width="29"
@@ -91,6 +104,7 @@
             class="header-button is-mobile-hidden"
             type="button"
             aria-label="Cart"
+            @click="navigate('/cart')"
           >
             <svg
               width="32"
@@ -107,11 +121,46 @@
           </button>
         </div>
       </div>
+
+      <nav v-if="isMenuOpen" class="header-menu" aria-label="Mobile navigation">
+        <a
+          v-for="link in navLinks"
+          :key="link.path"
+          :class="{ 'is-active': currentPath === link.path }"
+          :href="link.path"
+          @click.prevent="goTo(link.path)"
+        >
+          {{ link.title }}
+        </a>
+      </nav>
     </div>
   </header>
 </template>
 
-<script setup lang="js"></script>
+<script setup lang="js">
+import { ref } from "vue";
+import { navigate, useRouter } from "../router";
+
+const { currentPath } = useRouter();
+const isMenuOpen = ref(false);
+
+const navLinks = [
+  { path: "/", title: "Home" },
+  { path: "/catalog", title: "Catalog" },
+  { path: "/product", title: "Product" },
+  { path: "/cart", title: "Cart" },
+  { path: "/registration", title: "Registration" },
+];
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
+}
+
+function goTo(path) {
+  navigate(path);
+  isMenuOpen.value = false;
+}
+</script>
 
 <style scoped lang="css">
 .header {
@@ -139,6 +188,38 @@
   gap: 20px;
 }
 
+.header-nav,
+.header-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  color: #fbfbfb;
+  font-size: 13px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.header-nav a,
+.header-menu a {
+  opacity: 0.75;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.header-nav a:hover,
+.header-nav a.is-active,
+.header-menu a:hover,
+.header-menu a.is-active {
+  color: var(--color-accent);
+  opacity: 1;
+}
+
+.header-menu {
+  display: none;
+  padding-bottom: 18px;
+}
+
 .header-logo {
   display: inline-flex;
   align-items: center;
@@ -151,7 +232,9 @@
 .header-button {
   display: inline-flex;
   align-items: center;
-  width: 25px;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
 }
 
 @media (max-width: 1599px) {
@@ -169,6 +252,16 @@
 }
 
 @media (max-width: 767px) {
+  .header-nav {
+    display: none;
+  }
+
+  .header-menu {
+    display: grid;
+    gap: 14px;
+    justify-items: end;
+  }
+
   .is-mobile-hidden {
     display: none;
   }

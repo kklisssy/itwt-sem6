@@ -13,12 +13,12 @@
             <fieldset>
               <legend>Your Name</legend>
 
-              <input
+              <UiInput
                 type="text"
                 placeholder="First Name"
                 aria-label="First Name"
               />
-              <input
+              <UiInput
                 type="text"
                 placeholder="Last Name"
                 aria-label="Last Name"
@@ -40,8 +40,8 @@
             <fieldset>
               <legend>Login details</legend>
 
-              <input type="email" placeholder="Email" aria-label="Email" />
-              <input
+              <UiInput type="email" placeholder="Email" aria-label="Email" />
+              <UiInput
                 type="password"
                 placeholder="Password"
                 aria-label="Password"
@@ -53,7 +53,7 @@
               </p>
             </fieldset>
 
-            <button class="join-button" type="submit">
+            <UiButton class="join-button" type="submit">
               JOIN NOW
               <svg
                 aria-hidden="true"
@@ -76,7 +76,7 @@
                   fill="white"
                 />
               </svg>
-            </button>
+            </UiButton>
           </form>
 
           <section class="loyalty">
@@ -112,6 +112,8 @@
 <script setup lang="js">
 import { ref, onMounted } from "vue";
 import { getRegistration } from "../api/registrationApi";
+import UiButton from "../components/ui/Button.vue";
+import UiInput from "../components/ui/Input.vue";
 
 const loyalty = ref({
   title: "",
@@ -175,22 +177,6 @@ onMounted(async () => {
   color: #222222;
 }
 
-.registration-form input[type="text"],
-.registration-form input[type="email"],
-.registration-form input[type="password"] {
-  width: 100%;
-  min-height: 45px;
-  padding: 12px 17px;
-  border: 1px solid #a4a4a4;
-  font-size: 13px;
-  line-height: 1.2;
-  color: #222222;
-}
-
-.registration-form input::placeholder {
-  color: #b1b1b1;
-}
-
 .gender-options {
   display: flex;
   align-items: center;
@@ -223,17 +209,7 @@ onMounted(async () => {
 
 .join-button {
   width: 167px;
-  min-height: 50px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: 20px;
-  padding: 14px 20px;
-  background-color: var(--color-accent);
-  color: #ffffff;
-  font-size: 14px;
-  line-height: 1.2;
-  font-weight: 400;
 }
 
 .loyalty {

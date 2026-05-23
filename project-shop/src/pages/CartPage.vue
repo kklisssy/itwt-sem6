@@ -27,6 +27,7 @@
                     class="cart-item-remove"
                     type="button"
                     aria-label="Remove item"
+                    @click="removeItem(item.id)"
                   >
                     <svg
                       width="18"
@@ -63,9 +64,10 @@
                         <input
                           class="cart-quantity"
                           type="number"
-                          :value="item.quantity"
+                          v-model.number="item.quantity"
                           min="1"
                           aria-label="Quantity"
+                          @change="normalizeQuantity(item)"
                         />
                       </dd>
                     </div>
@@ -75,8 +77,8 @@
             </div>
 
             <div class="cart-actions">
-              <button type="button">CLEAR SHOPPING CART</button>
-              <button type="button">CONTINUE SHOPPING</button>
+              <button type="button" @click="clearCart">CLEAR SHOPPING CART</button>
+              <button type="button" @click="navigate('/catalog')">CONTINUE SHOPPING</button>
             </div>
           </div>
 
@@ -102,12 +104,12 @@
             <div class="cart-total">
               <div class="subtotal">
                 <span>SUB TOTAL</span>
-                <span>{{ cartSummary.subTotal }}</span>
+                <span>{{ cartTotal }}</span>
               </div>
 
               <div class="grand-total">
                 <span>GRAND TOTAL</span>
-                <span>{{ cartSummary.grandTotal }}</span>
+                <span>{{ cartTotal }}</span>
               </div>
 
               <button type="button">PROCEED TO CHECKOUT</button>
@@ -120,8 +122,9 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { getCart } from "../api/cartApi";
+import { navigate } from "../router";
 
 const cartItems = ref([]);
 const cartSummary = ref({
@@ -129,11 +132,34 @@ const cartSummary = ref({
   grandTotal: "$0",
 });
 
+const cartTotal = computed(() => {
+  const total = cartItems.value.reduce((sum, item) => {
+    const price = Number(String(item.price).replace(/[^0-9.]/g, ""));
+    return sum + price * item.quantity;
+  }, 0);
+
+  return `$${total.toFixed(2)}`;
+});
+
 onMounted(async () => {
   const data = await getCart();
   cartItems.value = data.items;
   cartSummary.value = data.summary;
 });
+
+function removeItem(id) {
+  cartItems.value = cartItems.value.filter((item) => item.id !== id);
+}
+
+function clearCart() {
+  cartItems.value = [];
+}
+
+function normalizeQuantity(item) {
+  if (!item.quantity || item.quantity < 1) {
+    item.quantity = 1;
+  }
+}
 </script>
 
 <style scoped lang="css">

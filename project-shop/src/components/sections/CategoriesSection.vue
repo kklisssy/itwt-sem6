@@ -2,7 +2,7 @@
   <section class="categories">
     <div class="container">
       <div class="categories-grid">
-        <article class="categories-card">
+        <article class="categories-card" @click="navigate('/catalog')">
           <img
             class="categories-image"
             src="../../assets/woman-cs.png"
@@ -14,7 +14,7 @@
           </div>
         </article>
 
-        <article class="categories-card categories-card-men">
+        <article class="categories-card categories-card-men" @click="navigate('/catalog')">
           <img
             class="categories-image"
             src="../../assets/man-cs.png"
@@ -26,7 +26,7 @@
           </div>
         </article>
 
-        <article class="categories-card categories-card-kids">
+        <article class="categories-card categories-card-kids" @click="navigate('/catalog')">
           <img
             class="categories-image"
             src="../../assets/kid.png"
@@ -38,7 +38,7 @@
           </div>
         </article>
 
-        <article class="categories-card categories-card-accessories">
+        <article class="categories-card categories-card-accessories" @click="navigate('/catalog')">
           <img
             class="categories-image"
             src="../../assets/accesories.png"
@@ -54,7 +54,9 @@
   </section>
 </template>
 
-<script setup lang="js"></script>
+<script setup lang="js">
+import { navigate } from "../../router";
+</script>
 
 <style scoped lang="css">
 .categories {
@@ -71,6 +73,7 @@
   position: relative;
   min-height: 260px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .categories-image {

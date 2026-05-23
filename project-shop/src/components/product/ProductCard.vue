@@ -1,20 +1,28 @@
 <template>
   <article class="product-card">
-    <img class="product-card-image" :src="product.image" :alt="product.title" />
+    <a class="product-card-link" href="/product" @click.prevent="navigate('/product')">
+      <img class="product-card-image" :src="product.image" :alt="product.title" />
+    </a>
 
     <div class="product-card-content">
-      <h3 class="product-card-title">{{ product.title }}</h3>
+      <h3 class="product-card-title">
+        <a href="/product" @click.prevent="navigate('/product')">{{ product.title }}</a>
+      </h3>
 
       <p class="product-card-text">
         {{ product.description }}
       </p>
 
       <p class="product-card-price">{{ product.price }}</p>
+
+      <button class="product-card-button" type="button">Add to Cart</button>
     </div>
   </article>
 </template>
 
 <script setup lang="js">
+import { navigate } from "../../router";
+
 defineProps({
   product: {
     type: Object,
@@ -28,11 +36,20 @@ defineProps({
   background-color: #f8f8f8;
 }
 
+.product-card-link {
+  display: block;
+}
+
 .product-card-image {
   display: block;
   width: 100%;
   height: 420px;
   object-fit: contain;
+  transition: opacity 0.2s ease;
+}
+
+.product-card-link:hover .product-card-image {
+  opacity: 0.8;
 }
 
 .product-card-content {
@@ -55,10 +72,24 @@ defineProps({
 }
 
 .product-card-price {
-  margin: 0;
+  margin: 0 0 18px;
   font-size: 16px;
   line-height: 1.2;
   color: var(--color-accent);
+}
+
+.product-card-button {
+  min-height: 38px;
+  padding: 9px 16px;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.product-card-button:hover {
+  background-color: var(--color-accent);
+  color: #ffffff;
 }
 
 @media (max-width: 767px) {
