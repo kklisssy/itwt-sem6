@@ -1,5 +1,16 @@
 services:
+  mongo:
+    image: mongo:8.0
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
   frontend:
     build: .
     ports:
       - "8080:80"
+
+volumes:
+  mongo-data:
