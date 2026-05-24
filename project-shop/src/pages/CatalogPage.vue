@@ -3,14 +3,14 @@
     <section class="catalog-heading">
       <div class="container">
         <div class="catalog-heading-inner">
-          <h1>NEW ARRIVALS</h1>
+          <h1>{{ pageTitle }}</h1>
 
           <nav class="breadcrumbs" aria-label="Breadcrumbs">
             <a href="#">HOME</a>
             <span>/</span>
-            <a href="#">MEN</a>
+            <a href="#">{{ categoryLabel }}</a>
             <span>/</span>
-            <span class="breadcrumbs-current">NEW ARRIVALS</span>
+            <span class="breadcrumbs-current">{{ pageTitle }}</span>
           </nav>
         </div>
       </div>
@@ -42,14 +42,31 @@
         </div>
 
         <nav class="pagination" aria-label="Catalog pagination">
-          <button type="button" aria-label="Previous page">&lt;</button>
-          <a class="pagination-current" href="#">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#">6</a>
-          <button type="button" aria-label="Next page">&gt;</button>
+          <button
+            type="button"
+            aria-label="Previous page"
+            :disabled="currentPage === 1"
+            @click="setPage(currentPage - 1)"
+          >
+            &lt;
+          </button>
+          <button
+            v-for="page in pageNumbers"
+            :key="page"
+            type="button"
+            :class="{ 'pagination-current': currentPage === page }"
+            @click="setPage(page)"
+          >
+            {{ page }}
+          </button>
+          <button
+            type="button"
+            aria-label="Next page"
+            :disabled="currentPage === pagination.pages"
+            @click="setPage(currentPage + 1)"
+          >
+            &gt;
+          </button>
         </nav>
       </div>
     </section>
@@ -59,20 +76,58 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import ProductCard from "../components/product/ProductCard.vue";
 import FeatureSection from "../components/sections/FeatureSection.vue";
 import { getCatalog } from "../api/catalogApi";
+import { useRouter } from "../router";
 
 const productsCatalog = ref([]);
-
-onMounted(async () => {
-  const data = await getCatalog();
-
-  productsCatalog.value = data.productsCatalog
-    .filter((product) => product.category === "men")
-    .slice(0, 9);
+const currentPage = ref(1);
+const pagination = ref({
+  page: 1,
+  limit: 9,
+  total: 0,
+  pages: 1,
 });
+const { currentQuery } = useRouter();
+
+const activeCategory = computed(() => currentQuery.value.get("category") || "men");
+const categoryLabel = computed(() => activeCategory.value.toUpperCase());
+const pageTitle = computed(() =>
+  activeCategory.value === "men" ? "NEW ARRIVALS" : `FOR ${categoryLabel.value}`
+);
+
+const pageNumbers = computed(() =>
+  Array.from({ length: pagination.value.pages }, (_, index) => index + 1)
+);
+
+onMounted(loadCatalog);
+
+watch(activeCategory, () => {
+  currentPage.value = 1;
+  loadCatalog();
+});
+
+async function loadCatalog() {
+  const data = await getCatalog({
+    category: activeCategory.value,
+    page: currentPage.value,
+    limit: pagination.value.limit,
+  });
+
+  productsCatalog.value = data.productsCatalog;
+  pagination.value = data.pagination;
+}
+
+function setPage(page) {
+  if (page < 1 || page > pagination.value.pages || page === currentPage.value) {
+    return;
+  }
+
+  currentPage.value = page;
+  loadCatalog();
+}
 </script>
 
 <style scoped lang="css">
@@ -189,6 +244,11 @@ onMounted(async () => {
 .pagination button,
 .pagination a {
   color: inherit;
+}
+
+.pagination button:disabled {
+  cursor: default;
+  opacity: 0.4;
 }
 
 .pagination-current {

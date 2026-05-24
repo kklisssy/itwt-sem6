@@ -2,7 +2,7 @@
   <section class="categories">
     <div class="container">
       <div class="categories-grid">
-        <article class="categories-card" @click="navigate('/catalog')">
+        <article class="categories-card" @click="navigate('/catalog?category=women')">
           <img
             class="categories-image"
             src="../../assets/woman-cs.png"
@@ -14,7 +14,7 @@
           </div>
         </article>
 
-        <article class="categories-card categories-card-men" @click="navigate('/catalog')">
+        <article class="categories-card categories-card-men" @click="navigate('/catalog?category=men')">
           <img
             class="categories-image"
             src="../../assets/man-cs.png"
@@ -26,7 +26,7 @@
           </div>
         </article>
 
-        <article class="categories-card categories-card-kids" @click="navigate('/catalog')">
+        <article class="categories-card categories-card-kids" @click="navigate('/catalog?category=kids')">
           <img
             class="categories-image"
             src="../../assets/kid.png"
@@ -38,7 +38,7 @@
           </div>
         </article>
 
-        <article class="categories-card categories-card-accessories" @click="navigate('/catalog')">
+        <article class="categories-card categories-card-accessories" @click="navigate('/catalog?category=accessories')">
           <img
             class="categories-image"
             src="../../assets/accesories.png"
