@@ -1,12 +1,18 @@
 <template>
   <article class="product-card">
-    <a class="product-card-link" href="/product" @click.prevent="navigate('/product')">
+    <a
+      class="product-card-link"
+      :href="productUrl"
+      @click.prevent="navigate(productUrl)"
+    >
       <img class="product-card-image" :src="product.image" :alt="product.title" />
     </a>
 
     <div class="product-card-content">
       <h3 class="product-card-title">
-        <a href="/product" @click.prevent="navigate('/product')">{{ product.title }}</a>
+        <a :href="productUrl" @click.prevent="navigate(productUrl)">
+          {{ product.title }}
+        </a>
       </h3>
 
       <p class="product-card-text">
@@ -35,6 +41,7 @@ const props = defineProps({
 });
 
 const isAdding = ref(false);
+const productUrl = `/product?id=${props.product.id}`;
 
 async function handleAddToCart() {
   isAdding.value = true;
