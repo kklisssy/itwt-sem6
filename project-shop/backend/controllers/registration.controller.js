@@ -1,0 +1,15 @@
+export const getRegistration = (req, res) => {
+  res.json({
+    loyalty: {
+      title: "LOYALTY HAS ITS PERKS",
+      text: "Get in on the loyalty program where you can earn points and unlock serious perks. Starting with these as soon as you join:",
+      list: [
+        "15% off welcome offer",
+        "Free shipping, returns and exchanges on all orders",
+        "$10 off a purchase on your birthday",
+        "Early access to products",
+        "Exclusive offers and rewards",
+      ],
+    },
+  });
+};

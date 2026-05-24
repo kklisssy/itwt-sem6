@@ -11,6 +11,8 @@ export default defineConfig({
       "/api/catalog": "http://localhost:3001",
       "/api/home": "http://localhost:3001",
       "/api/product": "http://localhost:3001",
+      "/api/registration": "http://localhost:3001",
+      "/api/user": "http://localhost:3001",
     },
   },
 });
