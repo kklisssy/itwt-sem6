@@ -21,6 +21,7 @@ import CatalogPage from "../pages/CatalogPage.vue";
 import ProductPage from "../pages/ProductPage.vue";
 import CartPage from "../pages/CartPage.vue";
 import RegistrationPage from "../pages/RegistrationPage.vue";
+import LoginPage from "../pages/LoginPage.vue";
 import { useRouter } from "../router";
 
 const { currentPath } = useRouter();
@@ -31,6 +32,7 @@ const pageByPath = {
   "/product": ProductPage,
   "/cart": CartPage,
   "/registration": RegistrationPage,
+  "/login": LoginPage,
 };
 
 const currentPage = computed(() => pageByPath[currentPath.value] || MainPage);

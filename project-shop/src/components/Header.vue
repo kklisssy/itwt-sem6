@@ -84,7 +84,7 @@
             class="header-button is-mobile-hidden"
             type="button"
             aria-label="Account"
-            @click="navigate('/registration')"
+            @click="navigate('/login')"
           >
             <svg
               width="29"
@@ -150,6 +150,7 @@ const navLinks = [
   { path: "/product", title: "Product" },
   { path: "/cart", title: "Cart" },
   { path: "/registration", title: "Registration" },
+  { path: "/login", title: "Login" },
 ];
 
 function toggleMenu() {

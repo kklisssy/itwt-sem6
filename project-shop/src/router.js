@@ -6,6 +6,7 @@ export const routes = {
   "/product": { title: "Product" },
   "/cart": { title: "Cart" },
   "/registration": { title: "Registration" },
+  "/login": { title: "Login" },
 };
 
 const currentPath = ref(normalizePath(window.location.pathname));
