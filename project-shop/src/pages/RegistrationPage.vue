@@ -9,16 +9,18 @@
     <section class="registration">
       <div class="container">
         <div class="registration-layout">
-          <form class="registration-form">
+          <form class="registration-form" @submit.prevent="handleRegister">
             <fieldset>
               <legend>Your Name</legend>
 
               <UiInput
+                v-model="form.firstName"
                 type="text"
                 placeholder="First Name"
                 aria-label="First Name"
               />
               <UiInput
+                v-model="form.lastName"
                 type="text"
                 placeholder="Last Name"
                 aria-label="Last Name"
@@ -40,8 +42,14 @@
             <fieldset>
               <legend>Login details</legend>
 
-              <UiInput type="email" placeholder="Email" aria-label="Email" />
               <UiInput
+                v-model="form.email"
+                type="email"
+                placeholder="Email"
+                aria-label="Email"
+              />
+              <UiInput
+                v-model="form.password"
                 type="password"
                 placeholder="Password"
                 aria-label="Password"
@@ -53,8 +61,12 @@
               </p>
             </fieldset>
 
-            <UiButton class="join-button" type="submit">
-              JOIN NOW
+            <p v-if="formMessage" class="form-message" :class="messageClass">
+              {{ formMessage }}
+            </p>
+
+            <UiButton class="join-button" type="submit" :disabled="isSubmitting">
+              {{ isSubmitting ? "JOINING..." : "JOIN NOW" }}
               <svg
                 aria-hidden="true"
                 width="17"
@@ -110,7 +122,8 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from "vue";
+import { computed, ref, onMounted } from "vue";
+import { registerUser } from "../api/authApi";
 import { getRegistration } from "../api/registrationApi";
 import UiButton from "../components/ui/Button.vue";
 import UiInput from "../components/ui/Input.vue";
@@ -120,11 +133,50 @@ const loyalty = ref({
   text: "",
   list: [],
 });
+const form = ref({
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+});
+const formMessage = ref("");
+const isSubmitting = ref(false);
+const isSuccess = ref(false);
+
+const messageClass = computed(() => ({
+  "form-message-success": isSuccess.value,
+  "form-message-error": !isSuccess.value,
+}));
 
 onMounted(async () => {
   const data = await getRegistration();
   loyalty.value = data.loyalty;
 });
+
+async function handleRegister() {
+  formMessage.value = "";
+  isSuccess.value = false;
+  isSubmitting.value = true;
+
+  try {
+    const name = `${form.value.firstName} ${form.value.lastName}`.trim();
+    const data = await registerUser({
+      name,
+      email: form.value.email,
+      password: form.value.password,
+    });
+
+    localStorage.setItem("authToken", data.token);
+    localStorage.setItem("authUser", JSON.stringify(data.user));
+
+    isSuccess.value = true;
+    formMessage.value = "Registration completed";
+  } catch (error) {
+    formMessage.value = error.response?.data?.message || "Registration failed";
+  } finally {
+    isSubmitting.value = false;
+  }
+}
 </script>
 
 <style scoped lang="css">
@@ -210,6 +262,20 @@ onMounted(async () => {
 .join-button {
   width: 167px;
   gap: 20px;
+}
+
+.form-message {
+  margin: -8px 0 0;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.form-message-success {
+  color: #248a3d;
+}
+
+.form-message-error {
+  color: var(--color-accent);
 }
 
 .loyalty {
