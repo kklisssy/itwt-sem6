@@ -123,7 +123,7 @@
 
 <script setup lang="js">
 import { computed, ref, onMounted } from "vue";
-import { getCart } from "../api/cartApi";
+import { clearCartItems, getCart, removeCartItem } from "../api/cartApi";
 import { navigate } from "../router";
 
 const cartItems = ref([]);
@@ -141,18 +141,24 @@ const cartTotal = computed(() => {
   return `$${total.toFixed(2)}`;
 });
 
-onMounted(async () => {
+onMounted(loadCart);
+
+async function loadCart() {
   const data = await getCart();
   cartItems.value = data.items;
   cartSummary.value = data.summary;
-});
-
-function removeItem(id) {
-  cartItems.value = cartItems.value.filter((item) => item.id !== id);
 }
 
-function clearCart() {
-  cartItems.value = [];
+async function removeItem(id) {
+  const data = await removeCartItem(id);
+  cartItems.value = data.items;
+  cartSummary.value = data.summary;
+}
+
+async function clearCart() {
+  const data = await clearCartItems();
+  cartItems.value = data.items;
+  cartSummary.value = data.summary;
 }
 
 function normalizeQuantity(item) {

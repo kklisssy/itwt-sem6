@@ -15,20 +15,41 @@
 
       <p class="product-card-price">{{ product.price }}</p>
 
-      <button class="product-card-button" type="button">Add to Cart</button>
+      <button class="product-card-button" type="button" @click="handleAddToCart">
+        {{ isAdding ? "Adding..." : "Add to Cart" }}
+      </button>
     </div>
   </article>
 </template>
 
 <script setup lang="js">
+import { ref } from "vue";
+import { addCartItem } from "../../api/cartApi";
 import { navigate } from "../../router";
 
-defineProps({
+const props = defineProps({
   product: {
     type: Object,
     required: true,
   },
 });
+
+const isAdding = ref(false);
+
+async function handleAddToCart() {
+  isAdding.value = true;
+
+  try {
+    await addCartItem({
+      productId: props.product.id,
+      quantity: 1,
+      size: "M",
+      color: "Default",
+    });
+  } finally {
+    isAdding.value = false;
+  }
+}
 </script>
 
 <style scoped lang="css">
