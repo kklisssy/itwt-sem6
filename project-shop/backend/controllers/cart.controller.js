@@ -4,18 +4,18 @@ import { ensureProductsSeeded } from "../services/seed.service.js";
 
 const parsePrice = (price) => Number(String(price).replace(/[^0-9.]/g, ""));
 
-const getOrCreateCart = async () => {
-  let cart = await Cart.findOne();
+const getOrCreateCart = async (userId) => {
+  let cart = await Cart.findOne({ user: userId });
 
   if (!cart) {
-    cart = await Cart.create({ items: [] });
+    cart = await Cart.create({ user: userId, items: [] });
   }
 
   return cart;
 };
 
-const buildCartResponse = async () => {
-  const cart = await getOrCreateCart();
+const buildCartResponse = async (userId) => {
+  const cart = await getOrCreateCart(userId);
   await cart.populate("items.product");
 
   const items = cart.items.map((item) => ({
@@ -40,7 +40,7 @@ const buildCartResponse = async () => {
 };
 
 export const getCart = async (req, res) => {
-  res.json(await buildCartResponse());
+  res.json(await buildCartResponse(req.user.id));
 };
 
 export const addCartItem = async (req, res) => {
@@ -60,7 +60,7 @@ export const addCartItem = async (req, res) => {
     return res.status(404).json({ message: "Product not found" });
   }
 
-  const cart = await getOrCreateCart();
+  const cart = await getOrCreateCart(req.user.id);
   const existingItem = cart.items.find((item) => item.product.equals(product._id));
   const quantityToAdd =
     Number.isInteger(parsedQuantity) && parsedQuantity > 0 ? parsedQuantity : 1;
@@ -78,7 +78,7 @@ export const addCartItem = async (req, res) => {
 
   await cart.save();
 
-  return res.status(201).json(await buildCartResponse());
+  return res.status(201).json(await buildCartResponse(req.user.id));
 };
 
 export const removeCartItem = async (req, res) => {
@@ -89,14 +89,14 @@ export const removeCartItem = async (req, res) => {
   }
 
   const product = await Product.findOne({ legacyId: parsedProductId });
-  const cart = await getOrCreateCart();
+  const cart = await getOrCreateCart(req.user.id);
 
   if (product) {
     cart.items = cart.items.filter((item) => !item.product.equals(product._id));
     await cart.save();
   }
 
-  return res.json(await buildCartResponse());
+  return res.json(await buildCartResponse(req.user.id));
 };
 
 export const updateCartItem = async (req, res) => {
@@ -117,7 +117,7 @@ export const updateCartItem = async (req, res) => {
     return res.status(404).json({ message: "Product not found" });
   }
 
-  const cart = await getOrCreateCart();
+  const cart = await getOrCreateCart(req.user.id);
   const existingItem = cart.items.find((item) => item.product.equals(product._id));
 
   if (!existingItem) {
@@ -127,13 +127,13 @@ export const updateCartItem = async (req, res) => {
   existingItem.quantity = parsedQuantity;
   await cart.save();
 
-  return res.json(await buildCartResponse());
+  return res.json(await buildCartResponse(req.user.id));
 };
 
 export const clearCart = async (req, res) => {
-  const cart = await getOrCreateCart();
+  const cart = await getOrCreateCart(req.user.id);
   cart.items = [];
   await cart.save();
 
-  return res.json(await buildCartResponse());
+  return res.json(await buildCartResponse(req.user.id));
 };
