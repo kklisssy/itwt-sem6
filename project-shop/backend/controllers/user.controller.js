@@ -1,3 +1,3 @@
 export const getUser = (req, res) => {
-  res.send("user endpoint");
+  res.json({ user: req.user });
 };
