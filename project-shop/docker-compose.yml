@@ -7,8 +7,24 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  backend:
+    build:
+      context: .
+      target: backend
+    restart: unless-stopped
+    environment:
+      MONGO_URI: mongodb://mongo:27017/project-shop
+    expose:
+      - "3001"
+    depends_on:
+      - mongo
+
   frontend:
-    build: .
+    build:
+      context: .
+      target: frontend
+    depends_on:
+      - backend
     ports:
       - "8080:80"
 
