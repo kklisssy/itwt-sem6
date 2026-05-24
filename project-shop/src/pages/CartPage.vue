@@ -123,7 +123,12 @@
 
 <script setup lang="js">
 import { computed, ref, onMounted } from "vue";
-import { clearCartItems, getCart, removeCartItem } from "../api/cartApi";
+import {
+  clearCartItems,
+  getCart,
+  removeCartItem,
+  updateCartItem,
+} from "../api/cartApi";
 import { navigate } from "../router";
 
 const cartItems = ref([]);
@@ -161,10 +166,14 @@ async function clearCart() {
   cartSummary.value = data.summary;
 }
 
-function normalizeQuantity(item) {
+async function normalizeQuantity(item) {
   if (!item.quantity || item.quantity < 1) {
     item.quantity = 1;
   }
+
+  const data = await updateCartItem(item.id, { quantity: item.quantity });
+  cartItems.value = data.items;
+  cartSummary.value = data.summary;
 }
 </script>
 

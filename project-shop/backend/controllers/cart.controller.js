@@ -99,6 +99,37 @@ export const removeCartItem = async (req, res) => {
   return res.json(await buildCartResponse());
 };
 
+export const updateCartItem = async (req, res) => {
+  const parsedProductId = Number(req.params.productId);
+  const parsedQuantity = Number(req.body.quantity);
+
+  if (!Number.isInteger(parsedProductId)) {
+    return res.status(400).json({ message: "Product id is required" });
+  }
+
+  if (!Number.isInteger(parsedQuantity) || parsedQuantity < 1) {
+    return res.status(400).json({ message: "Quantity must be greater than 0" });
+  }
+
+  const product = await Product.findOne({ legacyId: parsedProductId });
+
+  if (!product) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
+  const cart = await getOrCreateCart();
+  const existingItem = cart.items.find((item) => item.product.equals(product._id));
+
+  if (!existingItem) {
+    return res.status(404).json({ message: "Cart item not found" });
+  }
+
+  existingItem.quantity = parsedQuantity;
+  await cart.save();
+
+  return res.json(await buildCartResponse());
+};
+
 export const clearCart = async (req, res) => {
   const cart = await getOrCreateCart();
   cart.items = [];

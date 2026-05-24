@@ -5,12 +5,14 @@ import {
   clearCart,
   getCart,
   removeCartItem,
+  updateCartItem,
 } from "../controllers/cart.controller.js";
 
 const router = Router();
 
 router.get("/", getCart);
 router.post("/items", addCartItem);
+router.patch("/items/:productId", updateCartItem);
 router.delete("/items/:productId", removeCartItem);
 router.delete("/", clearCart);
 
