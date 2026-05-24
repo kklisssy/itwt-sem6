@@ -1,6 +1,6 @@
 import { http } from "./http";
 
-export const getCatalog = async () => {
-  const response = await http.get("/catalog.json");
+export const getCatalog = async (params = {}) => {
+  const response = await http.get("/catalog", { params });
   return response.data;
 };

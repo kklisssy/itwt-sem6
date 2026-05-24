@@ -7,6 +7,10 @@ export default defineConfig({
   server: {
     proxy: {
       "/api/auth": "http://localhost:3001",
+      "/api/cart": "http://localhost:3001",
+      "/api/catalog": "http://localhost:3001",
+      "/api/home": "http://localhost:3001",
+      "/api/product": "http://localhost:3001",
     },
   },
 });

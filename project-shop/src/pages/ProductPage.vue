@@ -21,6 +21,7 @@
         class="product-arrow product-arrow-prev"
         type="button"
         aria-label="Previous product image"
+        @click="goToProduct(previousProductId)"
       >
         <svg
           width="13"
@@ -47,6 +48,7 @@
         class="product-arrow product-arrow-next"
         type="button"
         aria-label="Next product image"
+        @click="goToProduct(nextProductId)"
       >
         <svg
           width="13"
@@ -83,7 +85,7 @@
             <button type="button">QUANTITY</button>
           </div>
 
-          <button class="add-cart-button" type="button">
+          <button class="add-cart-button" type="button" @click="handleAddToCart">
             <svg
               width="27"
               height="25"
@@ -96,7 +98,7 @@
                 fill="#EF5B70"
               />
             </svg>
-            Add to Cart
+            {{ isAdding ? "Adding..." : "Add to Cart" }}
           </button>
         </article>
       </div>
@@ -117,18 +119,62 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import ProductCard from "../components/product/ProductCard.vue";
+import { addCartItem } from "../api/cartApi";
 import { getProduct } from "../api/productApi";
+import { navigate, useRouter } from "../router";
 
 const currentProduct = ref(null);
 const relatedProducts = ref([]);
+const previousProductId = ref(null);
+const nextProductId = ref(null);
+const isAdding = ref(false);
+const { currentQuery } = useRouter();
 
-onMounted(async () => {
-  const data = await getProduct();
+onMounted(loadProduct);
+
+watch(
+  () => currentQuery.value.get("id"),
+  loadProduct
+);
+
+async function loadProduct() {
+  const productId = currentQuery.value.get("id");
+  const data = await getProduct(productId ? { id: productId } : {});
+
   currentProduct.value = data.product;
   relatedProducts.value = data.relatedProducts;
-});
+  previousProductId.value = data.previousProductId;
+  nextProductId.value = data.nextProductId;
+}
+
+function goToProduct(productId) {
+  if (!productId) {
+    return;
+  }
+
+  navigate(`/product?id=${productId}`);
+}
+
+async function handleAddToCart() {
+  if (!currentProduct.value) {
+    return;
+  }
+
+  isAdding.value = true;
+
+  try {
+    await addCartItem({
+      productId: currentProduct.value.id,
+      quantity: 1,
+      size: "M",
+      color: "Default",
+    });
+  } finally {
+    isAdding.value = false;
+  }
+}
 </script>
 
 <style scoped lang="css">

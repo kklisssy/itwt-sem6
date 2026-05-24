@@ -1,12 +1,18 @@
 <template>
   <article class="product-card">
-    <a class="product-card-link" href="/product" @click.prevent="navigate('/product')">
+    <a
+      class="product-card-link"
+      :href="productUrl"
+      @click.prevent="navigate(productUrl)"
+    >
       <img class="product-card-image" :src="product.image" :alt="product.title" />
     </a>
 
     <div class="product-card-content">
       <h3 class="product-card-title">
-        <a href="/product" @click.prevent="navigate('/product')">{{ product.title }}</a>
+        <a :href="productUrl" @click.prevent="navigate(productUrl)">
+          {{ product.title }}
+        </a>
       </h3>
 
       <p class="product-card-text">
@@ -15,20 +21,42 @@
 
       <p class="product-card-price">{{ product.price }}</p>
 
-      <button class="product-card-button" type="button">Add to Cart</button>
+      <button class="product-card-button" type="button" @click="handleAddToCart">
+        {{ isAdding ? "Adding..." : "Add to Cart" }}
+      </button>
     </div>
   </article>
 </template>
 
 <script setup lang="js">
+import { ref } from "vue";
+import { addCartItem } from "../../api/cartApi";
 import { navigate } from "../../router";
 
-defineProps({
+const props = defineProps({
   product: {
     type: Object,
     required: true,
   },
 });
+
+const isAdding = ref(false);
+const productUrl = `/product?id=${props.product.id}`;
+
+async function handleAddToCart() {
+  isAdding.value = true;
+
+  try {
+    await addCartItem({
+      productId: props.product.id,
+      quantity: 1,
+      size: "M",
+      color: "Default",
+    });
+  } finally {
+    isAdding.value = false;
+  }
+}
 </script>
 
 <style scoped lang="css">
