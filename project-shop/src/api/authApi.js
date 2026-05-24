@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const authHttp = axios.create({
-  baseURL: import.meta.env.VITE_AUTH_API_URL || "http://localhost:3001/api",
+  baseURL: import.meta.env.VITE_AUTH_API_URL || "/api",
   timeout: 5000,
 });
 
